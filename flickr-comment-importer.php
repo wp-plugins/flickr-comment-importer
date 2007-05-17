@@ -18,7 +18,7 @@ function flickr_comment_importer() {
 	$rss = @fetch_rss( $url );
 	foreach( $rss->items as $item ) {
 		$post_name		= str_replace( "comment-about-", "", sanitize_title( $item['title'] ) );
-		$comment_author		= wp_specialchars( "Flickr: " . substr( str_replace( "nobody@flickr.com (", "", wp_specialchars( $item[ 'author' ] ) ), 0, -1 ) );
+		$comment_author		= addslashes( wp_specialchars( "Flickr: " . substr( str_replace( "nobody@flickr.com (", "", wp_specialchars( $item[ 'author' ] ) ), 0, -1 ) ) );
 		$comment_author_email	= 'nobody@flickr.com';
 		$comment_author_url	= wp_specialchars( $item[ 'link' ] );
 		$comment_content	= addslashes( strip_tags( $item[ 'description' ] ) );
