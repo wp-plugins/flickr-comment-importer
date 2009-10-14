@@ -89,7 +89,7 @@ function fci_conf() {
 <form action="" method="post" id="fci-conf" style="margin: auto; ">
 <?php fci_nonce_field($fci_nonce) ?>
 <h3><label for="key"><?php _e('Flickr Recent Activity RSS Feed'); ?></label></h3>
-<p><input id="url" name="flickrcommenturl" type="text" size="85" maxlength="100" value="<?php echo get_option('flickrcommenturl'); ?>" style="font-family: 'Courier New', Courier, mono; font-size: 1.5em;" /></p>
+<p><input id="url" name="flickrcommenturl" type="text" size="85" maxlength="300" value="<?php echo get_option('flickrcommenturl'); ?>" style="font-family: 'Courier New', Courier, mono; font-size: 1.5em;" /></p>
 <?php if ( $invalid_url ) { ?>
 	<p style="padding: .5em; background-color: #f33; color: #fff; font-weight: bold; width: 30em"><?php _e('That URL is not a RSS feed. Double-check it.'); ?></p>
 <?php } ?>
