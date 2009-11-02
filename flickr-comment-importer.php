@@ -4,7 +4,7 @@ Plugin Name: Flickr comment Importer
 Plugin URI: http://inphotos.org/
 Description: Add Flickr comments to your blog posts. <a href='options-general.php?page=flickr-comment-importer.php'>Configuration Page</a>
 Author: Donncha O Caoimh
-Version: 0.1
+Version: 0.2
 Author URI: http://inphotos.org/
 */ 
 
