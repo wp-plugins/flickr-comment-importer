@@ -1,5 +1,5 @@
 === Flickr Comment Importer ===
-Contributors: donncha
+Contributors: donncha, automattic
 Tags: flickr,comments
 Tested up to: 4.1.1
 Stable tag: 0.3
