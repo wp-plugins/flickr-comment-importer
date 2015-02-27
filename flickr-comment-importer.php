@@ -39,6 +39,50 @@ function flickr_comment_importer() {
 
 		$comment_date = date("Y-m-d h:i:s", strtotime( $item->get_date() ) );
 		$comment_date_gmt = date("Y-m-d h:i:s", strtotime( $item->get_date() ) + 28800 );
+		if( isset( $cached_details[ $post_name ] ) == false ) {
+			$cached_details[ $post_name ] = $wpdb->get_var( "SELECT ID FROM {$wpdb->posts} WHERE post_name = '$post_name'" );
+		}
+		if( $cached_details[ $post_name ] != null && null == $wpdb->get_var( "SELECT comment_ID FROM {$wpdb->comments} WHERE comment_author_url='{$comment_author_url}'" ) ) {
+			$comment_post_ID = $cached_details[ $post_name ];
+			$commentdata = compact('comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_content', 'comment_type', 'user_ID');
+			$commentdata['comment_post_ID'] = (int) $commentdata['comment_post_ID'];
+			$commentdata['user_ID']         = (int) $commentdata['user_ID'];
+			$commentdata['comment_date']     = $comment_date;
+			$commentdata['comment_date_gmt'] = $comment_date_gmt;
+
+			$commentdata['comment_author_IP'] = '127.0.0.1';
+			$commentdata['comment_agent']     = "Flickr Add Comment Agent";
+			$commentdata['comment_approved'] = 0;
+			$comment_ID = wp_insert_comment($commentdata);
+		}
+	}
+}
+
+if ( ! function_exists('wp_nonce_field') ) {
+	function fci_nonce_field($action = -1) {
+		return;	
+	}
+	$fci_nonce = -1;
+} else {
+	function fci_nonce_field($action = -1) {
+		return wp_nonce_field($action);
+	}
+	$fci_nonce = 'fci-update-key';
+}
+
+function fci_config_page() {
+	global $wpdb;
+	if ( function_exists('add_submenu_page') )
+		add_submenu_page('options-general.php', __('Flickr Comments'), __('Flickr Comments'), 'manage_options', __FILE__, 'fci_conf');
+}
+
+function fci_conf() {
+	global $fci_nonce;
+	if ( isset($_POST['submit']) ) {
+		if ( function_exists('current_user_can') && !current_user_can('manage_options') )
+			die(__('Cheatin&#8217; uh?'));
+
+		check_admin_referer($fci_nonce);
 		$rss = fetch_feed( $_POST[ 'flickrcommenturl' ] );
 		if ( is_wp_error( $rss ) ) { // Checks that the object is created correctly
 			$invalid_url = true;
